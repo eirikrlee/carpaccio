@@ -19,12 +19,21 @@ function Server (doLogRequests) {
     res.json({up: true})
   })
 
-  app.post('/order', function (req, res, next) {
+  app.post('/quote', function (req, res, next) {
+    console.log(req.body);
+
     routes.order(req, res, next);
+    //routes.order(req, res, next);
   });
+
   app.post('/feedback', function (req, res, next) {
     routes.feedback(req, res, next);
   });
+
+  app.use(function (err, req, res, next) {
+
+     res.status(400).send({ error: err.message });
+  })
 
   var server = http.createServer(app);
   server.start = server.listen.bind(server, process.env.PORT || 3000);
